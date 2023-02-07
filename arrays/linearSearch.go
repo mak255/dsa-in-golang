@@ -1,23 +1,23 @@
 package arrays
 
 import (
+	"errors"
 	"fmt"
-	"reflect"
 )
 
-func linearSearch(arr interface{}, value interface{}) (int, error) {
-	a := reflect.ValueOf(arr)
+var ItemNotFound = errors.New("Item not present in array")
+var EmptySlice = errors.New("Trying to search in empty slice")
 
-	if a.Kind() != reflect.Array {
-		return 0, fmt.Errorf("Not an Array")
+func linearSearch[T int | float64 | float32 | string](arr []T, value T) (int, error) {
+	if len(arr) == 0 {
+		return 0, EmptySlice
 	}
-
-	for i := 0; i < a.Len(); i++ {
-		if a.Index(i).Interface() == value {
+	for i := 0; i < len(arr); i++ {
+		if arr[i] == value {
 			return i, nil
 		}
 	}
-	return 0, fmt.Errorf("Item not found in Array")
+	return 0, ItemNotFound
 }
 
 func selectionSort(arr [5]int) [5]int {
